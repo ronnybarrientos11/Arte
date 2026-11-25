@@ -109,7 +109,47 @@ summary{cursor:pointer;font-size:14px;color:var(--gris)}
 .modal{position:fixed;z-index:20}
 [hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){.flash{transition:none}}
+
+/* ============ Taller: muro y composición ============ */
+.modo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.opc{font:600 15px Inter,sans-serif;text-align:left;padding:12px 14px;min-height:64px;border:1px solid var(--linea);background:#fff;color:var(--ink);cursor:pointer;display:grid;gap:2px}
+.opc small{font-weight:400;font-size:13px;color:var(--gris)}
+.opc.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opc.on::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rojo);margin-bottom:4px}
+.ok{font-size:14px;margin:6px 0 0}
+.ok::before{content:"● ";color:var(--rojo)}
+.lienzo{position:relative;width:100%;margin-top:14px;background:#f3f3f3;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;outline:1px solid var(--ink)}
+.lienzo .muro{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}
+.lienzo .capa{position:absolute;height:auto;max-width:none;cursor:grab;-webkit-user-drag:none}
+.lienzo .capa.sel{outline:1.5px dashed var(--rojo);outline-offset:2px}
+.ctrl{border-top:1px solid var(--linea);padding-top:12px;margin-top:4px}
+.sel-nombre{font-family:"Instrument Serif",serif;font-size:22px;margin:0 0 6px}
+input[type=range]{-webkit-appearance:auto;appearance:auto;border:0;padding:0;margin-top:8px;accent-color:var(--ink);height:28px}
+.lista{margin:0 0 6px;padding-left:20px;color:var(--gris);font-size:15px}
+.lista li{margin-bottom:6px}
+.lista code{font-size:13px;background:#f3f3f3;padding:1px 4px;overflow-wrap:anywhere}
+
+/* ============ Visitante: modo muro ============ */
+.mind{position:absolute;inset:0;overflow:hidden}
+.guia{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:16px;pointer-events:none;padding:20px}
+.marco{position:relative;width:min(78vw,420px);min-height:140px;display:grid;place-items:center;
+  background:linear-gradient(#fff,#fff) 0 0/28px 3px no-repeat,linear-gradient(#fff,#fff) 0 0/3px 28px no-repeat,
+  linear-gradient(#fff,#fff) 100% 0/28px 3px no-repeat,linear-gradient(#fff,#fff) 100% 0/3px 28px no-repeat,
+  linear-gradient(#fff,#fff) 0 100%/28px 3px no-repeat,linear-gradient(#fff,#fff) 0 100%/3px 28px no-repeat,
+  linear-gradient(#fff,#fff) 100% 100%/28px 3px no-repeat,linear-gradient(#fff,#fff) 100% 100%/3px 28px no-repeat;padding:10px}
+.marco img{width:100%;height:auto;opacity:.35;display:block}
+.guia p{margin:0;background:#fff;color:var(--ink);padding:8px 16px;font-weight:600}
+@media(prefers-reduced-motion:no-preference){.marco{animation:respira 2.4s ease-in-out infinite}@keyframes respira{50%{transform:scale(1.03)}}}
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -122,16 +162,16 @@ summary{cursor:pointer;font-size:14px;color:var(--gris)}
 
   <section class="hero">
     <h1>Intervenir la calle sin tocar una pared.</h1>
-    <p class="lead">Pegas un código QR en la calle. Quien lo escanea con su celular abre la cámara y ve, en ese mismo lugar, el arte que dejaste ahí.</p>
+    <p class="lead">Pegas un código QR en la calle. Quien lo escanea apunta su cámara al muro y ve tu arte encima, en su lugar exacto.</p>
     <p class="aviso" id="avisoHttps" hidden>La cámara solo funciona cuando la página está publicada en internet.</p>
   </section>
 
   <section class="bloque">
     <h2 class="seccion">Cómo funciona</h2>
     <ol class="pasos">
-      <li><b>1</b><div><h3>Crea la intervención</h3><p>Elige un lugar de tu ciudad y sube las imágenes que quieres dejar ahí.</p></div></li>
-      <li><b>2</b><div><h3>Pega el QR</h3><p>Descarga el código de ese lugar, imprímelo y pégalo en la calle.</p></div></li>
-      <li><b>3</b><div><h3>La calle cambia</h3><p>Quien lo escanee verá tu arte flotando ahí, a través de su cámara.</p></div></li>
+      <li><b>1</b><div><h3>Compón sobre el muro</h3><p>Toma una foto del muro y coloca tu arte encima, como en un collage.</p></div></li>
+      <li><b>2</b><div><h3>Pega el QR</h3><p>Descarga el código de esa intervención, imprímelo y pégalo cerca del muro.</p></div></li>
+      <li><b>3</b><div><h3>La calle cambia</h3><p>Quien lo escanee apunta al muro y ve tu obra encajada en él.</p></div></li>
     </ol>
   </section>
 
@@ -142,15 +182,56 @@ summary{cursor:pointer;font-size:14px;color:var(--gris)}
 
   <section class="bloque" id="taller">
     <h2 class="seccion">Nueva intervención</h2>
-    <div class="paso-t"><span>1</span><label>¿En qué lugar?<input id="tNombre" placeholder="Ej. Esquina del mercado" autocomplete="off"></label></div>
-    <div class="paso-t"><span>2</span><div><p class="etq">¿Qué arte vas a dejar?</p>
-      <label class="archivo">+ Elegir imágenes<input id="tArchivos" type="file" accept="image/*" multiple></label>
-      <div id="tObras" class="t-obras"></div></div></div>
-    <div class="paso-t"><span>3</span><div><p class="etq">Mira cómo queda</p>
-      <button class="btn primario" id="tProbar" type="button">Ver en la calle</button></div></div>
+
+    <div class="paso-t"><span>1</span><label>¿En qué lugar?<input id="tNombre" placeholder="Ej. Muro del mercado" autocomplete="off"></label></div>
+
+    <div class="paso-t"><span>2</span><div>
+      <p class="etq">¿Dónde va el arte?</p>
+      <div class="modo" role="radiogroup" aria-label="Tipo de intervención">
+        <button type="button" class="opc on" data-modo="pared" role="radio" aria-checked="true">Sobre un muro<small>Queda pegado a la pared</small></button>
+        <button type="button" class="opc" data-modo="flotante" role="radio" aria-checked="false">Flotando<small>Alrededor de quien mira</small></button>
+      </div>
+      <div id="tParedBox">
+        <label class="archivo">Foto del muro<input id="tPared" type="file" accept="image/*"></label>
+        <p class="nota">De frente y de día, con el muro completo. Funciona mejor si tiene detalles: ventanas, ladrillos, grafitis.</p>
+        <p class="ok" id="tParedOk" hidden>Muro listo. Puedes cambiarlo cuando quieras.</p>
+      </div>
+    </div></div>
+
+    <div class="paso-t"><span>3</span><div>
+      <p class="etq">Tu arte</p>
+      <label class="archivo">+ Añadir imágenes<input id="tArchivos" type="file" accept="image/*" multiple></label>
+      <p class="nota" id="tSinMuro" hidden>Sube la foto del muro para colocar tus imágenes encima.</p>
+      <div id="tLienzoBox" hidden>
+        <div id="lienzo" class="lienzo"></div>
+        <p class="nota">Toca una imagen para elegirla. Arrastra para moverla; con dos dedos, agrándala o gírala.</p>
+        <div id="tCtrl" class="ctrl" hidden>
+          <p class="sel-nombre" id="cNombre"></p>
+          <label>Tamaño<input type="range" id="cTam" min="3" max="150" step="1"></label>
+          <label>Giro<input type="range" id="cGiro" min="-180" max="180" step="1"></label>
+          <div class="fila">
+            <button class="btn" id="cAdelante" type="button">Adelante</button>
+            <button class="btn" id="cAtras" type="button">Atrás</button>
+            <button class="btn" id="cQuitar" type="button">Quitar</button>
+          </div>
+        </div>
+      </div>
+      <div id="tObras" class="t-obras"></div>
+    </div></div>
+
+    <div class="paso-t"><span>4</span><div>
+      <p class="etq">Pruébalo</p>
+      <button class="btn primario" id="tProbar" type="button">Probar ahora</button>
+      <p class="nota" id="tEstado">Apunta la cámara al muro real, o a la foto del muro en otra pantalla.</p>
+    </div></div>
+
     <div class="guardar">
       <p class="etq">Para publicarla</p>
-      <p class="nota">Sube tus imágenes a GitHub y pega este código dentro de <b>obras.js</b>. Aparecerá en Intervenciones con su QR.</p>
+      <ol class="lista" id="tLista"></ol>
+      <div class="fila" id="tDescargas">
+        <button class="btn" id="tBajarAncla" type="button">Descargar ancla</button>
+        <button class="btn" id="tBajarGuia" type="button">Descargar foto guía</button>
+      </div>
       <div class="fila"><button class="btn" id="tCopiar" type="button">Copiar código</button></div>
       <details><summary>Ver código</summary><pre id="tCodigo" class="codigo"></pre></details>
     </div>
@@ -159,19 +240,25 @@ summary{cursor:pointer;font-size:14px;color:var(--gris)}
   <footer class="pie"><span class="marca">Calle Aumentada<i></i></span><span>Arte que solo se ve a través de una pantalla.</span></footer>
 </main>
 
-<!-- ============ VISTA AR (lo que ve quien escanea el QR) ============ -->
+<!-- ============ VISTA DEL VISITANTE ============ -->
 <section id="ar" hidden>
   <video id="video" playsinline muted autoplay></video>
   <canvas id="gl"></canvas>
+  <div id="mind" class="mind" hidden></div>
 
-  <div id="portada" class="portada">
+  <div id="guia" class="guia" hidden>
+    <div class="marco"><img id="guiaImg" alt=""></div>
+    <p id="guiaTxt">Apunta al muro</p>
+  </div>
+
+  <div id="portada" class="portada" hidden>
     <div class="portada-caja">
       <p class="kicker" id="pArtista"></p>
       <h1 id="pNombre"></h1>
       <p id="pDesc"></p>
       <div id="pThumbs" class="thumbs"></div>
       <button class="btn primario grande" id="btnAbrir" type="button">Ver el arte</button>
-      <p class="nota" id="pNota">Se abrirá tu cámara. Apunta a la calle y gira despacio para encontrar las obras.</p>
+      <p class="nota" id="pNota"></p>
       <a class="volver" id="pVolver" href="./" hidden>← Volver</a>
     </div>
   </div>
@@ -207,20 +294,28 @@ summary{cursor:pointer;font-size:14px;color:var(--gris)}
   <p class="nota centro">Mantén presionada la imagen para guardarla.</p>
   <div class="fila"><button class="btn" type="button" onclick="this.closest('#modal').hidden=true">Cerrar</button></div>
 </div>
+
 <script src="obras.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import * as THREE from 'three';
 
 {
 const LUGARES = window.LUGARES || {};
 const ARTISTA = window.ARTISTA || '';
+const MINDAR_CORE = 'https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const num = (v, d) => (Number.isFinite(+v) && v !== '' ? +v : d);
 const urlLugar = id => `${location.origin}${location.pathname}?lugar=${encodeURIComponent(id)}`;
+const urlCorta = () => `${location.host}${location.pathname}`.replace(/\/(index\.html)?$/, '');
 const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const seguro = location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname);
+const r2 = v => Math.round(v * 1000) / 1000;
+function descargar(blob, nombre) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove();
+}
 
 /* ---------- QR ---------- */
 function dibujarQR(canvas, texto, escala = 8) {
@@ -229,14 +324,14 @@ function dibujarQR(canvas, texto, escala = 8) {
   const n = qr.getModuleCount(), m = 4;
   canvas.width = canvas.height = (n + m * 2) * escala;
   const c = canvas.getContext('2d');
-  c.fillStyle = '#fff'; c.fillRect(0, 0, canvas.width, canvas.height); c.fillStyle = '#121015';
+  c.fillStyle = '#fff'; c.fillRect(0, 0, canvas.width, canvas.height); c.fillStyle = '#0a0a0a';
   for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) c.fillRect((k + m) * escala, (r + m) * escala, escala, escala);
   return true;
 }
 
 function afiche(id, lugar) {
-  const W = 1200, H = 1700, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-  const c = cv.getContext('2d');
+  const W = 1200, H = 1750, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const c = cv.getContext('2d'), muro = lugar.modo === 'pared';
   c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
   c.fillStyle = '#0a0a0a'; c.fillRect(110, 110, 980, 3);
   c.font = '500 30px Inter, sans-serif'; c.textAlign = 'left'; c.fillText('CALLE AUMENTADA', 110, 165);
@@ -245,13 +340,16 @@ function afiche(id, lugar) {
   c.font = 'italic 128px "Instrument Serif", Georgia, serif'; c.fillText('que no se ve.', 110, 450);
   c.fillStyle = '#e10600'; c.beginPath(); c.arc(1030, 420, 16, 0, 7); c.fill();
   const q = document.createElement('canvas'); dibujarQR(q, urlLugar(id), 20);
-  c.imageSmoothingEnabled = false; c.drawImage(q, 260, 530, 680, 680);
-  c.fillStyle = '#0a0a0a'; c.fillRect(110, 1290, 980, 1);
-  c.font = '64px "Instrument Serif", Georgia, serif'; c.fillText(lugar.nombre || id, 110, 1390);
+  c.imageSmoothingEnabled = false; c.drawImage(q, 260, 520, 680, 680);
+  c.fillStyle = '#0a0a0a'; c.fillRect(110, 1270, 980, 1);
+  c.font = '64px "Instrument Serif", Georgia, serif'; c.fillText(lugar.nombre || id, 110, 1370);
   c.fillStyle = '#555'; c.font = '36px Inter, sans-serif';
-  c.fillText('Escanea el código con la cámara de tu celular', 110, 1470);
-  c.fillText('y mira esta calle de otra forma.', 110, 1520);
-  if (ARTISTA) { c.fillStyle = '#0a0a0a'; c.font = '500 30px Inter, sans-serif'; c.fillText(ARTISTA, 110, 1600); }
+  c.fillText('1. Escanea el código con tu cámara.', 110, 1445);
+  c.fillText(muro ? '2. Apunta al muro y mira cómo cambia.' : '2. Gira despacio y descubre las obras.', 110, 1495);
+  c.fillStyle = '#0a0a0a'; c.font = '600 32px Inter, sans-serif'; c.fillText(urlCorta(), 110, 1585);
+  c.fillStyle = '#e10600'; c.font = '30px Inter, sans-serif';
+  c.fillText('Esta obra nunca te pedirá datos ni contraseñas.', 110, 1635);
+  if (ARTISTA) { c.fillStyle = '#555'; c.font = '28px Inter, sans-serif'; c.textAlign = 'right'; c.fillText(ARTISTA, 1090, 1635); }
   const url = cv.toDataURL('image/png');
   try { const a = document.createElement('a'); a.download = `qr-${id}.png`; a.href = url; a.click(); } catch {}
   $('#modalImg').src = url; $('#modal').hidden = false;
@@ -264,15 +362,14 @@ function iniciarEstudio() {
   $('#estudio').hidden = false;
   $('#avisoHttps').hidden = seguro;
   const ids = Object.keys(LUGARES);
-  $('#lugares').innerHTML = ids.length ? ids.map(id => {
-    const l = LUGARES[id], obras = l.obras || [];
-    const n = ids.indexOf(id) + 1;
+  $('#lugares').innerHTML = ids.length ? ids.map((id, i) => {
+    const l = LUGARES[id], obras = l.obras || [], muro = l.modo === 'pared';
     return `<article class="lugar">
       <div>
-        <p class="nro">Nº ${n}</p>
+        <p class="nro">Nº ${i + 1} · ${muro ? 'Sobre muro' : 'Flotante'}</p>
         <h3>${esc(l.nombre || id)}</h3>
         <p>${esc(l.descripcion)}</p>
-        <div class="thumbs">${obras.map(o => `<img src="${esc(o.imagen)}" alt="${esc(o.titulo)}" loading="lazy">`).join('')}</div>
+        <div class="thumbs">${muro && l.guia ? `<img src="${esc(l.guia)}" alt="Muro" loading="lazy">` : ''}${obras.map(o => `<img src="${esc(o.imagen)}" alt="${esc(o.titulo)}" loading="lazy">`).join('')}</div>
         <p class="pie-foto">${obras.length} ${obras.length === 1 ? 'obra' : 'obras'}</p>
         <div class="fila">
           <button class="btn primario" data-ver="${esc(id)}" type="button">Ver en la calle</button>
@@ -292,38 +389,139 @@ function iniciarEstudio() {
   iniciarTaller();
 }
 
+/* ============================================================
+   TALLER
+   ============================================================ */
 const POS = { frente: 0, izquierda: -70, derecha: 70, detras: 180 };
 const TAM = { chica: [0.8, 2], mediana: [1.5, 3], grande: [3, 5] };
 
 function iniciarTaller() {
-  const obras = [];
-  const nombre = $('#tNombre');
+  const T = { modo: 'pared', pared: null, capas: [], sel: -1, mind: null };
+  const nombre = $('#tNombre'), lienzo = $('#lienzo');
+  const id = () => slug(nombre.value) || 'mi-lugar';
   nombre.oninput = actualizar;
 
-  $('#tArchivos').onchange = e => {
-    [...e.target.files].forEach(f => {
-      const orden = ['frente', 'izquierda', 'derecha', 'detras'];
-      obras.push({ archivo: f.name, url: URL.createObjectURL(f), titulo: f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '),
-        pos: orden[obras.length % 4], tam: 'mediana' });
-    });
-    e.target.value = ''; pintarObras(); actualizar();
+  /* --- modo --- */
+  document.querySelectorAll('[data-modo]').forEach(b => b.onclick = () => {
+    T.modo = b.dataset.modo;
+    document.querySelectorAll('[data-modo]').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); });
+    pintar(); actualizar();
+  });
+
+  /* --- foto del muro: se reduce a 1024 px (misma imagen para componer y para el ancla) --- */
+  $('#tPared').onchange = e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1024 / Math.max(img.naturalWidth, img.naturalHeight));
+      const cv = document.createElement('canvas'); cv.width = Math.round(img.naturalWidth * k); cv.height = Math.round(img.naturalHeight * k);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      cv.toBlob(blob => {
+        const url = URL.createObjectURL(blob), lista = new Image();
+        lista.onload = () => { T.pared = { url, blob, img: lista, w: cv.width, h: cv.height }; T.mind = null; pintar(); actualizar(); };
+        lista.src = url;
+      }, 'image/jpeg', 0.88);
+    };
+    img.src = URL.createObjectURL(f);
   };
 
-  // convierte "al frente / mediana" en metros y grados (repartiendo si hay varias en el mismo lado)
-  function colocar() {
-    const cuenta = {}, sep = [0, 25, -25, 50, -50, 75, -75];
-    return obras.map(o => {
-      const n = cuenta[o.pos] = (cuenta[o.pos] ?? -1) + 1;
-      const [ancho, distancia] = TAM[o.tam];
-      return { titulo: o.titulo, archivo: o.archivo, url: o.url, ancho, distancia, angulo: POS[o.pos] + (sep[n] ?? n * 15), altura: 0 };
+  /* --- imágenes de arte --- */
+  $('#tArchivos').onchange = e => {
+    const orden = ['frente', 'izquierda', 'derecha', 'detras'];
+    [...e.target.files].forEach(f => {
+      const n = T.capas.length;
+      T.capas.push({ archivo: f.name, url: URL.createObjectURL(f), titulo: f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '),
+        x: r2((n % 3 - 1) * 0.08), y: r2(-(n % 3 - 1) * 0.05), ancho: 0.4, giro: 0, pos: orden[n % 4], tam: 'mediana' });
+      T.sel = T.capas.length - 1;
     });
+    e.target.value = ''; pintar(); actualizar();
+  };
+
+  /* --- pintar el paso 2/3 según el modo --- */
+  function pintar() {
+    const muro = T.modo === 'pared';
+    $('#tParedBox').hidden = !muro;
+    $('#tParedOk').hidden = !(muro && T.pared);
+    $('#tLienzoBox').hidden = !(muro && T.pared);
+    $('#tSinMuro').hidden = !(muro && !T.pared && T.capas.length);
+    if (muro) { pintarLienzo(); $('#tObras').innerHTML = ''; } else pintarLista();
   }
 
-  function pintarObras() {
+  function pintarLienzo() {
+    if (!T.pared) return;
+    lienzo.style.aspectRatio = `${T.pared.w} / ${T.pared.h}`;
+    lienzo.innerHTML = `<img class="muro" src="${esc(T.pared.url)}" alt="Foto del muro" draggable="false">` +
+      T.capas.map((c, i) => `<img class="capa${i === T.sel ? ' sel' : ''}" data-i="${i}" src="${esc(c.url)}" alt="${esc(c.titulo)}" draggable="false">`).join('');
+    T.capas.forEach((c, i) => colocarCapa(i));
+    const s = T.capas[T.sel];
+    $('#tCtrl').hidden = !s;
+    if (s) { $('#cTam').value = Math.round(s.ancho * 100); $('#cGiro').value = Math.round(s.giro); $('#cNombre').textContent = s.titulo; }
+  }
+  function colocarCapa(i) {
+    const c = T.capas[i], el = lienzo.querySelector(`.capa[data-i="${i}"]`); if (!el || !T.pared) return;
+    const hr = T.pared.h / T.pared.w;
+    el.style.left = (c.x + 0.5) * 100 + '%';
+    el.style.top = (0.5 - c.y / hr) * 100 + '%';
+    el.style.width = c.ancho * 100 + '%';
+    el.style.transform = `translate(-50%,-50%) rotate(${c.giro}deg)`;
+    el.style.zIndex = i + 1;
+  }
+
+  /* --- gestos: un dedo mueve, dos dedos agrandan y giran --- */
+  const dedos = new Map(); let base = null;
+  const estado = () => {
+    const p = [...dedos.values()], c = T.capas[T.sel];
+    if (!c) return null;
+    const b = { x: c.x, y: c.y, ancho: c.ancho, giro: c.giro, p0: p.map(q => ({ ...q })) };
+    if (p.length >= 2) { b.d = Math.hypot(p[1].x - p[0].x, p[1].y - p[0].y); b.a = Math.atan2(p[1].y - p[0].y, p[1].x - p[0].x); }
+    return b;
+  };
+  lienzo.onpointerdown = e => {
+    const capa = e.target.closest('.capa');
+    if (capa && dedos.size === 0 && +capa.dataset.i !== T.sel) {
+      T.sel = +capa.dataset.i; lienzo.querySelectorAll('.capa').forEach(x => x.classList.toggle('sel', +x.dataset.i === T.sel));
+      $('#tCtrl').hidden = false; const s = T.capas[T.sel];
+      $('#cTam').value = Math.round(s.ancho * 100); $('#cGiro').value = Math.round(s.giro); $('#cNombre').textContent = s.titulo;
+    }
+    if (T.sel < 0) return;
+    lienzo.setPointerCapture(e.pointerId);
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY }); base = estado();
+  };
+  lienzo.onpointermove = e => {
+    if (!dedos.has(e.pointerId) || !base) return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const c = T.capas[T.sel], W = lienzo.clientWidth, p = [...dedos.values()];
+    if (p.length >= 2 && base.d) {
+      const d = Math.hypot(p[1].x - p[0].x, p[1].y - p[0].y), a = Math.atan2(p[1].y - p[0].y, p[1].x - p[0].x);
+      c.ancho = r2(Math.min(3, Math.max(0.03, base.ancho * d / base.d)));
+      c.giro = Math.round(base.giro + (a - base.a) * 180 / Math.PI);
+      const mx = (p[0].x + p[1].x) / 2 - (base.p0[0].x + base.p0[1].x) / 2, my = (p[0].y + p[1].y) / 2 - (base.p0[0].y + base.p0[1].y) / 2;
+      c.x = r2(base.x + mx / W); c.y = r2(base.y - my / W);
+    } else {
+      c.x = r2(base.x + (p[0].x - base.p0[0].x) / W); c.y = r2(base.y - (p[0].y - base.p0[0].y) / W);
+    }
+    colocarCapa(T.sel); $('#cTam').value = Math.round(c.ancho * 100); $('#cGiro').value = c.giro;
+  };
+  const soltar = e => { dedos.delete(e.pointerId); base = dedos.size ? estado() : null; if (!dedos.size) actualizar(); };
+  lienzo.onpointerup = soltar; lienzo.onpointercancel = soltar;
+
+  $('#cTam').oninput = e => { const c = T.capas[T.sel]; if (c) { c.ancho = r2(e.target.value / 100); colocarCapa(T.sel); actualizar(); } };
+  $('#cGiro').oninput = e => { const c = T.capas[T.sel]; if (c) { c.giro = +e.target.value; colocarCapa(T.sel); actualizar(); } };
+  $('#cAdelante').onclick = () => mover(1);
+  $('#cAtras').onclick = () => mover(-1);
+  function mover(d) {
+    const j = T.sel + d; if (T.sel < 0 || j < 0 || j >= T.capas.length) return;
+    [T.capas[T.sel], T.capas[j]] = [T.capas[j], T.capas[T.sel]]; T.sel = j; pintarLienzo(); actualizar();
+  }
+  $('#cQuitar').onclick = () => { if (T.sel < 0) return; T.capas.splice(T.sel, 1); T.sel = T.capas.length - 1; pintar(); actualizar(); };
+
+  /* --- lista simple para el modo flotante --- */
+  function pintarLista() {
     const op = (obj, sel, txt) => Object.keys(obj).map(k => `<option value="${k}"${k === sel ? ' selected' : ''}>${txt[k]}</option>`).join('');
     const tPos = { frente: 'Al frente', izquierda: 'Izquierda', derecha: 'Derecha', detras: 'Detrás' };
     const tTam = { chica: 'Pequeña', mediana: 'Mediana', grande: 'Grande' };
-    $('#tObras').innerHTML = obras.map((o, i) => `<div class="t-obra" data-i="${i}">
+    $('#tObras').innerHTML = T.capas.map((o, i) => `<div class="t-obra" data-i="${i}">
       <img src="${esc(o.url)}" alt="">
       <div class="campos">
         <label class="ancho2">Título<input data-k="titulo" value="${esc(o.titulo)}"></label>
@@ -333,59 +531,194 @@ function iniciarTaller() {
       <button class="quitar" type="button" aria-label="Quitar">×</button>
     </div>`).join('');
     document.querySelectorAll('.t-obra').forEach(el => {
-      const o = obras[+el.dataset.i];
+      const o = T.capas[+el.dataset.i];
       el.querySelectorAll('input,select').forEach(inp => inp.oninput = inp.onchange = () => { o[inp.dataset.k] = inp.value; actualizar(); });
-      el.querySelector('.quitar').onclick = () => { obras.splice(+el.dataset.i, 1); pintarObras(); actualizar(); };
+      el.querySelector('.quitar').onclick = () => { T.capas.splice(+el.dataset.i, 1); pintarLista(); actualizar(); };
+    });
+  }
+  function colocarFlotante() {
+    const cuenta = {}, sep = [0, 25, -25, 50, -50, 75, -75];
+    return T.capas.map(o => {
+      const n = cuenta[o.pos] = (cuenta[o.pos] ?? -1) + 1, [ancho, distancia] = TAM[o.tam];
+      return { titulo: o.titulo, archivo: o.archivo, url: o.url, ancho, distancia, angulo: POS[o.pos] + (sep[n] ?? n * 15), altura: 0 };
     });
   }
 
-  function codigo() {
-    const id = slug(nombre.value) || 'mi-lugar', q = s => JSON.stringify(String(s ?? ''));
-    return `  ${q(id)}: {\n    nombre: ${q(nombre.value || 'Mi lugar')},\n    descripcion: "",\n    obras: [\n` +
-      colocar().map(o => `      { titulo: ${q(o.titulo)}, imagen: ${q(o.archivo)}, ancho: ${o.ancho}, distancia: ${o.distancia}, angulo: ${o.angulo}, altura: 0 }`).join(',\n') +
-      `\n    ]\n  },`;
+  /* --- ancla (reconocimiento del muro) --- */
+  async function compilar() {
+    if (T.mind) return T.mind;
+    if (!T.pared) throw new Error('sin muro');
+    estadoTxt('Preparando el reconocimiento del muro… 0%');
+    const mod = await import(MINDAR_CORE);
+    const Compiler = mod.Compiler || (window.MINDAR && (window.MINDAR.IMAGE?.Compiler || window.MINDAR.Compiler));
+    const comp = new Compiler();
+    await comp.compileImageTargets([T.pared.img], p => estadoTxt(`Preparando el reconocimiento del muro… ${Math.round(p)}%`));
+    T.mind = new Blob([await comp.exportData()], { type: 'application/octet-stream' });
+    estadoTxt('Listo.');
+    return T.mind;
   }
-  function actualizar() { $('#tCodigo').textContent = codigo(); }
+  const estadoTxt = t => { $('#tEstado').textContent = t; };
 
+  $('#tProbar').onclick = async () => {
+    if (!T.capas.length) return estadoTxt('Primero añade tus imágenes.');
+    if (T.modo === 'flotante') {
+      $('#estudio').hidden = true; scrollTo(0, 0);
+      return iniciarAR(null, { nombre: nombre.value || 'Prueba', descripcion: 'Así lo verá la gente.', obras: colocarFlotante().map(o => ({ ...o, imagen: o.url })), prueba: true });
+    }
+    if (!T.pared) return estadoTxt('Primero sube la foto del muro.');
+    try {
+      const mind = await compilar();
+      $('#estudio').hidden = true; scrollTo(0, 0);
+      iniciarAR(null, { nombre: nombre.value || 'Prueba', modo: 'pared', ancla: URL.createObjectURL(mind), guia: T.pared.url,
+        obras: T.capas.map(c => ({ ...c, imagen: c.url })), prueba: true });
+    } catch (err) { console.error(err); estadoTxt('No se pudo preparar el muro. Revisa tu conexión e inténtalo de nuevo.'); }
+  };
+
+  /* --- publicar --- */
+  function codigo() {
+    const q = s => JSON.stringify(String(s ?? ''));
+    let cab = `  ${q(id())}: {\n    nombre: ${q(nombre.value || 'Mi lugar')},\n    descripcion: "",\n`, obras;
+    if (T.modo === 'pared') {
+      cab += `    modo: "pared",\n    ancla: ${q(id() + '.mind')},\n    guia: ${q(id() + '-muro.jpg')},\n`;
+      obras = T.capas.map(c => `      { titulo: ${q(c.titulo)}, imagen: ${q(c.archivo)}, x: ${c.x}, y: ${c.y}, ancho: ${c.ancho}, giro: ${c.giro} }`);
+    } else {
+      obras = colocarFlotante().map(o => `      { titulo: ${q(o.titulo)}, imagen: ${q(o.archivo)}, ancho: ${o.ancho}, distancia: ${o.distancia}, angulo: ${o.angulo}, altura: 0 }`);
+    }
+    return cab + `    obras: [\n${obras.join(',\n')}\n    ]\n  },`;
+  }
+  function actualizar() {
+    $('#tCodigo').textContent = codigo();
+    const muro = T.modo === 'pared';
+    $('#tDescargas').hidden = !muro;
+    $('#tLista').innerHTML = (muro
+      ? ['Descarga el <b>ancla</b> y la <b>foto guía</b>.', 'Súbelas a GitHub junto con tus imágenes.', 'Copia el código y pégalo en <b>obras.js</b>, justo debajo de la línea <code>window.LUGARES = {</code>']
+      : ['Sube tus imágenes a GitHub.', 'Copia el código y pégalo en <b>obras.js</b>, justo debajo de la línea <code>window.LUGARES = {</code>']
+    ).map(t => `<li>${t}</li>`).join('');
+  }
+  $('#tBajarAncla').onclick = async () => {
+    if (!T.pared) return estadoTxt('Primero sube la foto del muro.');
+    try { descargar(await compilar(), id() + '.mind'); } catch (err) { console.error(err); estadoTxt('No se pudo preparar el muro. Revisa tu conexión.'); }
+  };
+  $('#tBajarGuia').onclick = () => { if (!T.pared) return estadoTxt('Primero sube la foto del muro.'); descargar(T.pared.blob, id() + '-muro.jpg'); };
   $('#tCopiar').onclick = async e => {
     try { await navigator.clipboard.writeText(codigo()); e.target.textContent = 'Copiado'; } catch { e.target.textContent = 'Ábrelo en "Ver código"'; }
     setTimeout(() => e.target.textContent = 'Copiar código', 2000);
   };
-  $('#tProbar').onclick = () => {
-    if (!obras.length) { $('#tProbar').textContent = 'Primero elige imágenes'; setTimeout(() => $('#tProbar').textContent = 'Ver en la calle', 2000); return; }
-    $('#estudio').hidden = true; scrollTo(0, 0);
-    iniciarAR(null, { nombre: nombre.value || 'Prueba', descripcion: 'Así lo verá la gente.', obras: colocar().map(o => ({ ...o, imagen: o.url })), prueba: true });
-  };
-  actualizar();
+  pintar(); actualizar();
 }
 
 /* ============================================================
-   VISTA AR
+   VISTA DEL VISITANTE
    ============================================================ */
 function iniciarAR(id, lugarTemp) {
   const lugar = lugarTemp || LUGARES[id];
   $('#ar').hidden = false;
   if (!lugar) {
+    $('#portada').hidden = false;
     $('#pNombre').textContent = 'Aún no hay arte aquí';
     $('#pDesc').textContent = 'Vuelve pronto.';
     $('#btnAbrir').hidden = true; $('#pNota').hidden = true;
     return;
   }
-  const obras = lugar.obras || [];
+  const obras = lugar.obras || [], muro = lugar.modo === 'pared';
   $('#pArtista').textContent = 'Intervención de arte virtual' + (ARTISTA ? ` · ${ARTISTA}` : '');
   $('#pNombre').textContent = lugar.nombre || id;
   $('#pDesc').textContent = lugar.descripcion || '';
   $('#hNombre').textContent = lugar.nombre || id;
   $('#pThumbs').innerHTML = obras.map(o => `<img src="${esc(o.imagen)}" alt="${esc(o.titulo)}">`).join('');
+  $('#btnCentrar').hidden = muro;
   if (lugar.prueba) {
     $('#pVolver').hidden = false;
-    const volver = e => { e.preventDefault(); detener(); $('#ar').hidden = true; $('#hud').hidden = true; $('#portada').hidden = false; $('#estudio').hidden = false; };
+    const volver = e => {
+      e.preventDefault(); detener();
+      ['#ar', '#hud', '#guia', '#mind', '#fotoPrev'].forEach(s => $(s).hidden = true);
+      $('#portada').hidden = false; $('#estudio').hidden = false;
+    };
     $('#pVolver').onclick = volver; $('#hSalir').onclick = volver;
   }
-  if (!seguro) $('#pNota').textContent = 'Sin cámara aquí: arrastra para mirar.';
-  $('#btnAbrir').onclick = () => arrancar(obras);
+  if (muro) {
+    $('#guiaImg').src = lugar.guia || ''; $('#guiaImg').hidden = !lugar.guia;
+    $('#pNota').textContent = 'Se abrirá tu cámara. Apunta al muro.';
+    $('#btnAbrir').onclick = () => arrancarPared(lugar);
+    arrancarPared(lugar);           // cámara directa, sin pasos extra
+  } else {
+    $('#pNota').textContent = seguro ? 'Se abrirá tu cámara. Gira despacio para encontrar las obras.' : 'Sin cámara aquí: arrastra para mirar.';
+    $('#btnAbrir').onclick = () => arrancar(obras);
+    $('#portada').hidden = false;
+  }
 }
 
+/* ---------- Modo muro: reconocimiento de imagen con MindAR ---------- */
+async function arrancarPared(lugar) {
+  $('#portada').hidden = true; $('#video').hidden = true; $('#gl').hidden = true;
+  const cont = $('#mind'); cont.hidden = false; cont.innerHTML = '';
+  $('#guiaTxt').textContent = 'Abriendo cámara…'; $('#guia').hidden = false;
+  let mt;
+  try {
+    const { MindARThree } = await import('mindar-image-three');
+    mt = new MindARThree({ container: cont, imageTargetSrc: lugar.ancla, maxTrack: 1,
+      uiLoading: 'no', uiScanning: 'no', uiError: 'no', filterMinCF: 0.0001, filterBeta: 0.001, warmupTolerance: 3, missTolerance: 8 });
+  } catch (err) { return fallaPared(err); }
+  const { renderer, scene, camera } = mt;
+  const anchor = mt.addAnchor(0), loader = new THREE.TextureLoader(), capas = [];
+  (lugar.obras || []).forEach((o, i) => loader.load(o.imagen, tex => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const img = tex.image, asp = (img.naturalWidth || img.width) / (img.naturalHeight || img.height) || 1, w = num(o.ancho, 0.4);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, w / asp), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false }));
+    m.position.set(num(o.x, 0), num(o.y, 0), 0.001 * (i + 1));
+    m.rotation.z = -num(o.giro, 0) * Math.PI / 180;
+    m.renderOrder = i; anchor.group.add(m); capas.push(m);
+  }));
+  let visto = 0;
+  anchor.onTargetFound = () => { visto = performance.now(); $('#guia').hidden = true; };
+  anchor.onTargetLost = () => { visto = 0; $('#guiaTxt').textContent = 'Apunta al muro'; $('#guia').hidden = false; };
+  try { await mt.start(); } catch (err) { return fallaPared(err); }
+  $('#guiaTxt').textContent = 'Apunta al muro';
+  $('#hud').hidden = false;
+  const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  renderer.setAnimationLoop(() => {
+    const k = visto ? (reducir ? 1 : Math.min(1, (performance.now() - visto) / 600)) : 0;
+    for (const m of capas) m.material.opacity = k;
+    renderer.render(scene, camera);
+  });
+  // foto: se dibuja justo después de renderizar para capturar el arte
+  $('#btnFoto').onclick = () => {
+    renderer.render(scene, camera);
+    const gl = renderer.domElement, video = cont.querySelector('video');
+    const W = gl.width, H = gl.height, c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    if (video && video.videoWidth) {
+      const s = Math.max(W / video.videoWidth, H / video.videoHeight), dw = video.videoWidth * s, dh = video.videoHeight * s;
+      g.drawImage(video, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    }
+    g.drawImage(gl, 0, 0, W, H);
+    mostrarFoto(c);
+  };
+  detener = () => { try { renderer.setAnimationLoop(null); mt.stop(); } catch {} cont.innerHTML = ''; $('#video').hidden = false; $('#gl').hidden = false; };
+}
+function fallaPared(err) {
+  console.error(err);
+  $('#guia').hidden = true; $('#mind').hidden = true;
+  $('#portada').hidden = false;
+  $('#pNota').textContent = seguro ? 'No se pudo abrir la cámara o cargar la obra. Revisa tu conexión y el permiso de cámara, y vuelve a intentarlo.' : 'La cámara solo funciona con la página publicada en internet.';
+  $('#btnAbrir').textContent = 'Intentar de nuevo'; $('#btnAbrir').disabled = false;
+}
+
+/* ---------- Foto compartida (ambos modos) ---------- */
+let ultimaFoto = null;
+function mostrarFoto(c) {
+  $('#flash').classList.add('on'); requestAnimationFrame(() => requestAnimationFrame(() => $('#flash').classList.remove('on')));
+  c.toBlob(b => { ultimaFoto = b; $('#fotoImg').src = URL.createObjectURL(b); $('#fotoPrev').hidden = false; }, 'image/jpeg', 0.92);
+}
+$('#fotoCerrar').onclick = () => $('#fotoPrev').hidden = true;
+$('#fotoCompartir').onclick = async () => {
+  if (!ultimaFoto) return;
+  const f = new File([ultimaFoto], 'calle-aumentada.jpg', { type: 'image/jpeg' });
+  try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Arte en la calle' }); return; } } catch { return; }
+  descargar(f, f.name);
+};
+
+/* ---------- Modo flotante (giroscopio) ---------- */
 let detener = () => {};
 
 async function arrancar(obras) {
@@ -539,7 +872,6 @@ function escena(obras, hayGiro, stream) {
   });
 
   /* --- Foto: cámara + arte en una sola imagen --- */
-  let ultimaFoto = null;
   $('#btnFoto').onclick = () => {
     const W = canvas.width, H = canvas.height, c = document.createElement('canvas'); c.width = W; c.height = H;
     const g = c.getContext('2d');
@@ -548,15 +880,7 @@ function escena(obras, hayGiro, stream) {
       g.drawImage(video, (W - dw) / 2, (H - dh) / 2, dw, dh);
     } else { g.fillStyle = '#1d1a21'; g.fillRect(0, 0, W, H); }
     g.drawImage(canvas, 0, 0, W, H);
-    $('#flash').classList.add('on'); requestAnimationFrame(() => requestAnimationFrame(() => $('#flash').classList.remove('on')));
-    c.toBlob(b => { ultimaFoto = b; $('#fotoImg').src = URL.createObjectURL(b); $('#fotoPrev').hidden = false; }, 'image/jpeg', 0.92);
-  };
-  $('#fotoCerrar').onclick = () => $('#fotoPrev').hidden = true;
-  $('#fotoCompartir').onclick = async () => {
-    if (!ultimaFoto) return;
-    const f = new File([ultimaFoto], 'calle-aumentada.jpg', { type: 'image/jpeg' });
-    try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Arte en la calle' }); return; } } catch { return; }
-    const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click();
+    mostrarFoto(c);
   };
 
   /* --- AR anclado con WebXR (Android/Chrome): las obras se quedan fijas en el espacio al caminar --- */
@@ -592,6 +916,8 @@ function escena(obras, hayGiro, stream) {
     $('#btnAbrir').disabled = false; $('#btnAbrir').textContent = 'Ver el arte';
   };
 }
+
+
 
 /* ---------- Arranque ---------- */
 const hashId = decodeURIComponent(location.hash.slice(1));
