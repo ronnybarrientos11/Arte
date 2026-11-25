@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Calle Aumentada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: revista de arte; pausada, segura, con aire.
+IDEA: un número impreso de una revista dedicada a la calle.
+PICTURE: el QR de cada intervención como lámina del catálogo.
+COLOUR and TYPE: blanco, negro y un punto rojo #e10600; Instrument Serif + Inter.
+LAYOUT: una columna de lectura, filetes negros entre secciones.
+*/
+:root{--bg:#fff;--ink:#0a0a0a;--gris:#5f5f5f;--linea:#dcdcdc;--rojo:#e10600;color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;line-height:1.02;margin:0;text-wrap:balance}
+#estudio{max-width:620px;margin:0 auto;padding:0 22px 40px}
+.mast{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:max(env(safe-area-inset-top),20px) 0 12px;border-bottom:3px solid var(--ink)}
+.marca{font-weight:600;font-size:13px;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px}
+.marca i{width:7px;height:7px;border-radius:50%;background:var(--rojo)}
+.num{font-size:13px;color:var(--gris)}
+.hero{padding:44px 0 40px;border-bottom:1px solid var(--ink)}
+.hero h1{font-size:clamp(46px,12vw,76px)}
+.lead{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(22px,5.4vw,26px);line-height:1.3;margin:24px 0 0}
+.aviso{margin:20px 0 0;font-size:14px;color:var(--rojo)}
+.bloque{padding:36px 0;border-bottom:1px solid var(--ink)}
+.seccion{font-family:Inter,sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.seccion::after{content:"";flex:1;height:1px;background:var(--linea)}
+.pasos{list-style:none;padding:0;margin:0;display:grid;gap:22px}
+.pasos li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:start}
+.pasos b{font-family:"Instrument Serif",serif;font-weight:400;font-size:52px;line-height:.9;color:var(--rojo)}
+.pasos h3{font-size:28px;margin-bottom:4px}
+.pasos p{margin:0;color:var(--gris)}
+.nota{font-size:15px;color:var(--gris);margin:8px 0}
+.etq{font-weight:600;margin:0 0 10px}
+.centro{text-align:center}
+
+.lugar{display:grid;grid-template-columns:minmax(0,1fr) 118px;gap:20px;align-items:start;padding:24px 0;border-top:1px solid var(--linea)}
+.lugar:first-child{border-top:0;padding-top:0}
+.nro{font-size:13px;color:var(--rojo);margin:0 0 4px;font-weight:600}
+.lugar h3{font-size:34px;margin-bottom:6px}
+.lugar p{margin:0;color:var(--gris)}
+.pie-foto{font-size:13px;font-style:italic}
+.qr{border:1px solid var(--ink);padding:6px}
+.qr canvas{width:100%;height:auto;display:block;image-rendering:pixelated}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 6px}
+.thumbs img{width:48px;height:48px;object-fit:contain;background:#f3f3f3;padding:3px}
+.fila{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.btn,.chip{font:600 15px Inter,sans-serif;min-height:44px;padding:0 18px;border-radius:0;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn.primario{background:var(--ink);color:#fff}
+.btn.grande{min-height:56px;font-size:17px;width:100%}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,.obturador:focus-visible{outline:2px solid var(--rojo);outline-offset:3px}
+.vacio{color:var(--gris);font-style:italic}
+
+.paso-t{display:grid;grid-template-columns:40px minmax(0,1fr);gap:6px;margin-bottom:26px}
+.paso-t>span{font-family:"Instrument Serif",serif;font-size:34px;line-height:1;color:var(--rojo)}
+label{display:block;font-weight:600;font-size:15px;margin-bottom:12px}
+input,select{display:block;width:100%;margin-top:6px;font:16px Inter,sans-serif;color:var(--ink);background:#fff;border:0;border-bottom:1px solid var(--ink);border-radius:0;padding:10px 0;-webkit-appearance:none;appearance:none}
+.archivo{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px dashed var(--ink);cursor:pointer;font-weight:600}
+.archivo input{display:none}
+.t-obras{display:grid;margin:10px 0 0}
+.t-obra{display:grid;grid-template-columns:56px minmax(0,1fr) 32px;gap:14px;padding:14px 0;border-top:1px solid var(--linea);align-items:start}
+.t-obra img{width:56px;height:56px;object-fit:contain;background:#f3f3f3}
+.t-obra .campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+.t-obra .campos label{margin:0;font-size:12px;font-weight:400;color:var(--gris)}
+.t-obra .campos .ancho2{grid-column:1/-1}
+.t-obra input,.t-obra select{padding:6px 0;margin-top:2px}
+.quitar{width:32px;height:32px;border:0;background:none;color:var(--gris);font-size:22px;cursor:pointer}
+.guardar{border-top:1px solid var(--linea);padding-top:22px}
+details{margin-top:6px}
+summary{cursor:pointer;font-size:14px;color:var(--gris)}
+.codigo{background:#f3f3f3;padding:14px;font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;max-height:260px}
+.pie{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 0;font-size:13px;color:var(--gris)}
+.pie .marca{color:var(--ink)}
+
+/* ============ AR ============ */
+#ar{position:fixed;inset:0;background:#111;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#video,#gl{position:absolute;inset:0;width:100%;height:100%}
+#video{object-fit:cover}
+.portada{position:absolute;inset:0;display:grid;place-items:end center;padding:20px 16px max(env(safe-area-inset-bottom),16px)}
+.portada-caja{width:100%;max-width:440px;background:#fff;color:var(--ink);padding:22px 22px 20px;border-top:3px solid var(--ink)}
+.portada h1{font-size:clamp(40px,11vw,56px);margin-bottom:10px}
+.kicker{display:flex;align-items:center;gap:6px;font-size:13px;margin:0 0 14px;color:var(--gris)}
+.kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rojo)}
+.portada p{color:var(--gris);margin:0 0 6px}
+.volver{display:block;text-align:center;color:var(--gris);margin-top:10px;font-size:14px}
+.hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:max(env(safe-area-inset-top),14px) 14px max(env(safe-area-inset-bottom),18px);color:#fff}
+.hud>*{pointer-events:auto}
+.hud-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hud-top span{font-family:"Instrument Serif",serif;font-size:24px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.chip{border-radius:0;background:rgba(0,0,0,.45);color:#fff;border-color:rgba(255,255,255,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hud-bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.hud-bottom #btnCentrar{justify-self:start}
+.hud-bottom #btnXR{justify-self:end}
+.obturador{width:72px;height:72px;border-radius:50%;border:4px solid #fff;background:var(--rojo);box-shadow:inset 0 0 0 4px #000;cursor:pointer}
+.pista{align-self:center;background:#fff;color:var(--ink);padding:10px 18px;font-weight:600;font-size:15px;pointer-events:none}
+.ficha{align-self:center;max-width:340px;background:#fff;color:var(--ink);padding:12px 16px;display:grid;gap:2px;margin-top:auto;margin-bottom:14px}
+.ficha span{color:var(--gris);font-size:14px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .35s}
+.flash.on{opacity:.85;transition:none}
+.foto-prev{position:absolute;inset:0;background:#fff;display:grid;place-items:center;align-content:center;gap:12px;padding:20px;color:var(--ink)}
+.foto-prev img{max-width:100%;max-height:70vh}
+.modal{position:fixed;z-index:20}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.flash{transition:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ ESTUDIO (lo ves tú, el artista) ============ -->
+<main id="estudio" hidden>
+  <header class="mast">
+    <span class="marca">Calle Aumentada<i></i></span>
+    <span class="num">Nº 1 — Arte virtual en la calle</span>
+  </header>
+
+  <section class="hero">
+    <h1>Intervenir la calle sin tocar una pared.</h1>
+    <p class="lead">Pegas un código QR en la calle. Quien lo escanea con su celular abre la cámara y ve, en ese mismo lugar, el arte que dejaste ahí.</p>
+    <p class="aviso" id="avisoHttps" hidden>La cámara solo funciona cuando la página está publicada en internet.</p>
+  </section>
+
+  <section class="bloque">
+    <h2 class="seccion">Cómo funciona</h2>
+    <ol class="pasos">
+      <li><b>1</b><div><h3>Crea la intervención</h3><p>Elige un lugar de tu ciudad y sube las imágenes que quieres dejar ahí.</p></div></li>
+      <li><b>2</b><div><h3>Pega el QR</h3><p>Descarga el código de ese lugar, imprímelo y pégalo en la calle.</p></div></li>
+      <li><b>3</b><div><h3>La calle cambia</h3><p>Quien lo escanee verá tu arte flotando ahí, a través de su cámara.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="bloque">
+    <h2 class="seccion">Intervenciones</h2>
+    <div id="lugares"></div>
+  </section>
+
+  <section class="bloque" id="taller">
+    <h2 class="seccion">Nueva intervención</h2>
+    <div class="paso-t"><span>1</span><label>¿En qué lugar?<input id="tNombre" placeholder="Ej. Esquina del mercado" autocomplete="off"></label></div>
+    <div class="paso-t"><span>2</span><div><p class="etq">¿Qué arte vas a dejar?</p>
+      <label class="archivo">+ Elegir imágenes<input id="tArchivos" type="file" accept="image/*" multiple></label>
+      <div id="tObras" class="t-obras"></div></div></div>
+    <div class="paso-t"><span>3</span><div><p class="etq">Mira cómo queda</p>
+      <button class="btn primario" id="tProbar" type="button">Ver en la calle</button></div></div>
+    <div class="guardar">
+      <p class="etq">Para publicarla</p>
+      <p class="nota">Sube tus imágenes a GitHub y pega este código dentro de <b>obras.js</b>. Aparecerá en Intervenciones con su QR.</p>
+      <div class="fila"><button class="btn" id="tCopiar" type="button">Copiar código</button></div>
+      <details><summary>Ver código</summary><pre id="tCodigo" class="codigo"></pre></details>
+    </div>
+  </section>
+
+  <footer class="pie"><span class="marca">Calle Aumentada<i></i></span><span>Arte que solo se ve a través de una pantalla.</span></footer>
+</main>
+
+<!-- ============ VISTA AR (lo que ve quien escanea el QR) ============ -->
+<section id="ar" hidden>
+  <video id="video" playsinline muted autoplay></video>
+  <canvas id="gl"></canvas>
+
+  <div id="portada" class="portada">
+    <div class="portada-caja">
+      <p class="kicker" id="pArtista"></p>
+      <h1 id="pNombre"></h1>
+      <p id="pDesc"></p>
+      <div id="pThumbs" class="thumbs"></div>
+      <button class="btn primario grande" id="btnAbrir" type="button">Ver el arte</button>
+      <p class="nota" id="pNota">Se abrirá tu cámara. Apunta a la calle y gira despacio para encontrar las obras.</p>
+      <a class="volver" id="pVolver" href="./" hidden>← Volver</a>
+    </div>
+  </div>
+
+  <div id="hud" class="hud" hidden>
+    <div class="hud-top">
+      <span id="hNombre"></span>
+      <a class="chip" id="hSalir" href="./">Salir</a>
+    </div>
+    <div id="pista" class="pista" hidden></div>
+    <div id="ficha" class="ficha" hidden>
+      <b id="fTitulo"></b><span id="fDesc"></span>
+    </div>
+    <div class="hud-bottom">
+      <button class="chip" id="btnCentrar" type="button">Recentrar</button>
+      <button class="obturador" id="btnFoto" type="button" aria-label="Tomar foto"></button>
+      <button class="chip" id="btnXR" type="button" hidden>AR anclado</button>
+    </div>
+  </div>
+
+  <div id="flash" class="flash"></div>
+  <div id="fotoPrev" class="foto-prev" hidden>
+    <img id="fotoImg" alt="Tu foto con la obra">
+    <div class="fila">
+      <button class="btn primario" id="fotoCompartir" type="button">Guardar</button>
+      <button class="btn" id="fotoCerrar" type="button">Cerrar</button>
+    </div>
+  </div>
+</section>
+
+<div id="modal" class="foto-prev modal" hidden>
+  <img id="modalImg" alt="Afiche con el código QR">
+  <p class="nota centro">Mantén presionada la imagen para guardarla.</p>
+  <div class="fila"><button class="btn" type="button" onclick="this.closest('#modal').hidden=true">Cerrar</button></div>
+</div>
+<script src="obras.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+{
+const LUGARES = window.LUGARES || {};
+const ARTISTA = window.ARTISTA || '';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = (v, d) => (Number.isFinite(+v) && v !== '' ? +v : d);
+const urlLugar = id => `${location.origin}${location.pathname}?lugar=${encodeURIComponent(id)}`;
+const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const seguro = location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname);
+
+/* ---------- QR ---------- */
+function dibujarQR(canvas, texto, escala = 8) {
+  if (typeof qrcode !== 'function') return false;
+  const qr = qrcode(0, 'M'); qr.addData(texto); qr.make();
+  const n = qr.getModuleCount(), m = 4;
+  canvas.width = canvas.height = (n + m * 2) * escala;
+  const c = canvas.getContext('2d');
+  c.fillStyle = '#fff'; c.fillRect(0, 0, canvas.width, canvas.height); c.fillStyle = '#121015';
+  for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) c.fillRect((k + m) * escala, (r + m) * escala, escala, escala);
+  return true;
+}
+
+function afiche(id, lugar) {
+  const W = 1200, H = 1700, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const c = cv.getContext('2d');
+  c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
+  c.fillStyle = '#0a0a0a'; c.fillRect(110, 110, 980, 3);
+  c.font = '500 30px Inter, sans-serif'; c.textAlign = 'left'; c.fillText('CALLE AUMENTADA', 110, 165);
+  c.textAlign = 'right'; c.fillText('Arte virtual', 1090, 165); c.textAlign = 'left';
+  c.font = '128px "Instrument Serif", Georgia, serif'; c.fillText('Aquí hay arte', 110, 330);
+  c.font = 'italic 128px "Instrument Serif", Georgia, serif'; c.fillText('que no se ve.', 110, 450);
+  c.fillStyle = '#e10600'; c.beginPath(); c.arc(1030, 420, 16, 0, 7); c.fill();
+  const q = document.createElement('canvas'); dibujarQR(q, urlLugar(id), 20);
+  c.imageSmoothingEnabled = false; c.drawImage(q, 260, 530, 680, 680);
+  c.fillStyle = '#0a0a0a'; c.fillRect(110, 1290, 980, 1);
+  c.font = '64px "Instrument Serif", Georgia, serif'; c.fillText(lugar.nombre || id, 110, 1390);
+  c.fillStyle = '#555'; c.font = '36px Inter, sans-serif';
+  c.fillText('Escanea el código con la cámara de tu celular', 110, 1470);
+  c.fillText('y mira esta calle de otra forma.', 110, 1520);
+  if (ARTISTA) { c.fillStyle = '#0a0a0a'; c.font = '500 30px Inter, sans-serif'; c.fillText(ARTISTA, 110, 1600); }
+  const url = cv.toDataURL('image/png');
+  try { const a = document.createElement('a'); a.download = `qr-${id}.png`; a.href = url; a.click(); } catch {}
+  $('#modalImg').src = url; $('#modal').hidden = false;
+}
+
+/* ============================================================
+   ESTUDIO
+   ============================================================ */
+function iniciarEstudio() {
+  $('#estudio').hidden = false;
+  $('#avisoHttps').hidden = seguro;
+  const ids = Object.keys(LUGARES);
+  $('#lugares').innerHTML = ids.length ? ids.map(id => {
+    const l = LUGARES[id], obras = l.obras || [];
+    const n = ids.indexOf(id) + 1;
+    return `<article class="lugar">
+      <div>
+        <p class="nro">Nº ${n}</p>
+        <h3>${esc(l.nombre || id)}</h3>
+        <p>${esc(l.descripcion)}</p>
+        <div class="thumbs">${obras.map(o => `<img src="${esc(o.imagen)}" alt="${esc(o.titulo)}" loading="lazy">`).join('')}</div>
+        <p class="pie-foto">${obras.length} ${obras.length === 1 ? 'obra' : 'obras'}</p>
+        <div class="fila">
+          <button class="btn primario" data-ver="${esc(id)}" type="button">Ver en la calle</button>
+          <button class="btn" data-afiche="${esc(id)}" type="button">Descargar QR</button>
+        </div>
+      </div>
+      <div class="qr"><canvas data-qr="${esc(id)}" aria-label="QR de ${esc(l.nombre || id)}"></canvas></div>
+    </article>`;
+  }).join('') : `<p class="vacio">Aún no hay intervenciones. Crea la primera abajo.</p>`;
+
+  document.querySelectorAll('[data-qr]').forEach(cv => { if (!dibujarQR(cv, urlLugar(cv.dataset.qr))) cv.parentElement.textContent = ''; });
+  document.querySelectorAll('[data-ver]').forEach(b => b.onclick = () => {
+    $('#estudio').hidden = true; scrollTo(0, 0);
+    iniciarAR(b.dataset.ver, { ...LUGARES[b.dataset.ver], prueba: true });
+  });
+  document.querySelectorAll('[data-afiche]').forEach(b => b.onclick = () => afiche(b.dataset.afiche, LUGARES[b.dataset.afiche]));
+  iniciarTaller();
+}
+
+const POS = { frente: 0, izquierda: -70, derecha: 70, detras: 180 };
+const TAM = { chica: [0.8, 2], mediana: [1.5, 3], grande: [3, 5] };
+
+function iniciarTaller() {
+  const obras = [];
+  const nombre = $('#tNombre');
+  nombre.oninput = actualizar;
+
+  $('#tArchivos').onchange = e => {
+    [...e.target.files].forEach(f => {
+      const orden = ['frente', 'izquierda', 'derecha', 'detras'];
+      obras.push({ archivo: f.name, url: URL.createObjectURL(f), titulo: f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '),
+        pos: orden[obras.length % 4], tam: 'mediana' });
+    });
+    e.target.value = ''; pintarObras(); actualizar();
+  };
+
+  // convierte "al frente / mediana" en metros y grados (repartiendo si hay varias en el mismo lado)
+  function colocar() {
+    const cuenta = {}, sep = [0, 25, -25, 50, -50, 75, -75];
+    return obras.map(o => {
+      const n = cuenta[o.pos] = (cuenta[o.pos] ?? -1) + 1;
+      const [ancho, distancia] = TAM[o.tam];
+      return { titulo: o.titulo, archivo: o.archivo, url: o.url, ancho, distancia, angulo: POS[o.pos] + (sep[n] ?? n * 15), altura: 0 };
+    });
+  }
+
+  function pintarObras() {
+    const op = (obj, sel, txt) => Object.keys(obj).map(k => `<option value="${k}"${k === sel ? ' selected' : ''}>${txt[k]}</option>`).join('');
+    const tPos = { frente: 'Al frente', izquierda: 'Izquierda', derecha: 'Derecha', detras: 'Detrás' };
+    const tTam = { chica: 'Pequeña', mediana: 'Mediana', grande: 'Grande' };
+    $('#tObras').innerHTML = obras.map((o, i) => `<div class="t-obra" data-i="${i}">
+      <img src="${esc(o.url)}" alt="">
+      <div class="campos">
+        <label class="ancho2">Título<input data-k="titulo" value="${esc(o.titulo)}"></label>
+        <label>Dónde<select data-k="pos">${op(POS, o.pos, tPos)}</select></label>
+        <label>Tamaño<select data-k="tam">${op(TAM, o.tam, tTam)}</select></label>
+      </div>
+      <button class="quitar" type="button" aria-label="Quitar">×</button>
+    </div>`).join('');
+    document.querySelectorAll('.t-obra').forEach(el => {
+      const o = obras[+el.dataset.i];
+      el.querySelectorAll('input,select').forEach(inp => inp.oninput = inp.onchange = () => { o[inp.dataset.k] = inp.value; actualizar(); });
+      el.querySelector('.quitar').onclick = () => { obras.splice(+el.dataset.i, 1); pintarObras(); actualizar(); };
+    });
+  }
+
+  function codigo() {
+    const id = slug(nombre.value) || 'mi-lugar', q = s => JSON.stringify(String(s ?? ''));
+    return `  ${q(id)}: {\n    nombre: ${q(nombre.value || 'Mi lugar')},\n    descripcion: "",\n    obras: [\n` +
+      colocar().map(o => `      { titulo: ${q(o.titulo)}, imagen: ${q(o.archivo)}, ancho: ${o.ancho}, distancia: ${o.distancia}, angulo: ${o.angulo}, altura: 0 }`).join(',\n') +
+      `\n    ]\n  },`;
+  }
+  function actualizar() { $('#tCodigo').textContent = codigo(); }
+
+  $('#tCopiar').onclick = async e => {
+    try { await navigator.clipboard.writeText(codigo()); e.target.textContent = 'Copiado'; } catch { e.target.textContent = 'Ábrelo en "Ver código"'; }
+    setTimeout(() => e.target.textContent = 'Copiar código', 2000);
+  };
+  $('#tProbar').onclick = () => {
+    if (!obras.length) { $('#tProbar').textContent = 'Primero elige imágenes'; setTimeout(() => $('#tProbar').textContent = 'Ver en la calle', 2000); return; }
+    $('#estudio').hidden = true; scrollTo(0, 0);
+    iniciarAR(null, { nombre: nombre.value || 'Prueba', descripcion: 'Así lo verá la gente.', obras: colocar().map(o => ({ ...o, imagen: o.url })), prueba: true });
+  };
+  actualizar();
+}
+
+/* ============================================================
+   VISTA AR
+   ============================================================ */
+function iniciarAR(id, lugarTemp) {
+  const lugar = lugarTemp || LUGARES[id];
+  $('#ar').hidden = false;
+  if (!lugar) {
+    $('#pNombre').textContent = 'Aún no hay arte aquí';
+    $('#pDesc').textContent = 'Vuelve pronto.';
+    $('#btnAbrir').hidden = true; $('#pNota').hidden = true;
+    return;
+  }
+  const obras = lugar.obras || [];
+  $('#pArtista').textContent = 'Intervención de arte virtual' + (ARTISTA ? ` · ${ARTISTA}` : '');
+  $('#pNombre').textContent = lugar.nombre || id;
+  $('#pDesc').textContent = lugar.descripcion || '';
+  $('#hNombre').textContent = lugar.nombre || id;
+  $('#pThumbs').innerHTML = obras.map(o => `<img src="${esc(o.imagen)}" alt="${esc(o.titulo)}">`).join('');
+  if (lugar.prueba) {
+    $('#pVolver').hidden = false;
+    const volver = e => { e.preventDefault(); detener(); $('#ar').hidden = true; $('#hud').hidden = true; $('#portada').hidden = false; $('#estudio').hidden = false; };
+    $('#pVolver').onclick = volver; $('#hSalir').onclick = volver;
+  }
+  if (!seguro) $('#pNota').textContent = 'Sin cámara aquí: arrastra para mirar.';
+  $('#btnAbrir').onclick = () => arrancar(obras);
+}
+
+let detener = () => {};
+
+async function arrancar(obras) {
+  $('#btnAbrir').disabled = true; $('#btnAbrir').textContent = 'Abriendo…';
+  // 1) Permiso de giroscopio (iPhone lo pide con un toque)
+  let hayGiro = false;
+  try {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      hayGiro = (await DeviceOrientationEvent.requestPermission()) === 'granted';
+    } else hayGiro = 'DeviceOrientationEvent' in window;
+  } catch { hayGiro = false; }
+  // 2) Cámara trasera
+  const video = $('#video'); let stream = null;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+    video.srcObject = stream; await video.play();
+  } catch { video.hidden = true; }
+
+  $('#portada').hidden = true; $('#hud').hidden = false;
+  escena(obras, hayGiro, stream);
+}
+
+function texturaSombra() {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  gr.addColorStop(0, 'rgba(0,0,0,.55)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+
+function escena(obras, hayGiro, stream) {
+  const canvas = $('#gl'), video = $('#video');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.05, 200);
+  const grupo = new THREE.Group(); scene.add(grupo);
+  const loader = new THREE.TextureLoader(), sombraTex = texturaSombra();
+  const piezas = [], PISO = -1.5;
+
+  obras.forEach((o, i) => {
+    loader.load(o.imagen, tex => {
+      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      const img = tex.image, asp = (img.naturalWidth || img.width) / (img.naturalHeight || img.height) || 1;
+      const w = num(o.ancho, 1.5), h = w / asp;
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, alphaTest: 0.02 }));
+      const a = num(o.angulo, 0) * Math.PI / 180, d = num(o.distancia, 3), y = num(o.altura, 0);
+      mesh.position.set(Math.sin(a) * d, y, -Math.cos(a) * d);
+      mesh.lookAt(0, y, 0);
+      mesh.userData = { obra: o, y0: y, t0: performance.now(), fase: i * 1.7 };
+      mesh.scale.setScalar(0.001);
+      const sombra = new THREE.Mesh(new THREE.PlaneGeometry(w * 1.1, w * 0.45), new THREE.MeshBasicMaterial({ map: sombraTex, transparent: true, depthWrite: false }));
+      sombra.rotation.x = -Math.PI / 2; sombra.position.set(mesh.position.x, PISO, mesh.position.z);
+      grupo.add(sombra, mesh); piezas.push(mesh);
+    }, undefined, () => console.warn('No se pudo cargar', o.imagen));
+  });
+
+  /* --- Orientación del celular → cámara --- */
+  let ori = null, yaw = 0, pitch = 0, modoArrastre = !hayGiro, centrado = false;
+  const zee = new THREE.Vector3(0, 0, 1), eu = new THREE.Euler(), q0 = new THREE.Quaternion(), q1 = new THREE.Quaternion(-Math.SQRT1_2, 0, 0, Math.SQRT1_2);
+  const rad = THREE.MathUtils.degToRad;
+  const anguloPantalla = () => (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+  const onOri = e => { if (e.alpha != null) { ori = e; modoArrastre = false; } };
+  window.addEventListener('deviceorientation', onOri, true);
+  if (!stream) mostrarPista('Sin cámara: arrastra para mirar', 4500);
+  setTimeout(() => { if (!ori) { modoArrastre = true; if (stream) mostrarPista('Arrastra para mirar', 3500); } }, 1200);
+
+  function aplicarOrientacion() {
+    eu.set(rad(ori.beta), rad(ori.alpha), -rad(ori.gamma), 'YXZ');
+    camera.quaternion.setFromEuler(eu); camera.quaternion.multiply(q1);
+    camera.quaternion.multiply(q0.setFromAxisAngle(zee, -rad(anguloPantalla())));
+  }
+  const dir = new THREE.Vector3();
+  function recentrar() {
+    camera.updateMatrixWorld(); camera.getWorldDirection(dir);
+    grupo.rotation.y = Math.atan2(-dir.x, -dir.z);
+    if (renderer.xr.isPresenting) { grupo.position.set(camera.position.x, 0, camera.position.z); }
+  }
+  $('#btnCentrar').onclick = recentrar;
+
+  /* --- Arrastrar (sin giroscopio) y tocar obras --- */
+  let abajo = null; const ray = new THREE.Raycaster(), pt = new THREE.Vector2();
+  canvas.onpointerdown = e => { abajo = { x: e.clientX, y: e.clientY, yaw, pitch, mov: false }; canvas.setPointerCapture(e.pointerId); };
+  canvas.onpointermove = e => {
+    if (!abajo) return;
+    const dx = e.clientX - abajo.x, dy = e.clientY - abajo.y;
+    if (Math.hypot(dx, dy) > 8) abajo.mov = true;
+    if (modoArrastre) { yaw = abajo.yaw + dx * 0.005; pitch = THREE.MathUtils.clamp(abajo.pitch + dy * 0.005, -1.2, 1.2); }
+  };
+  canvas.onpointerup = e => {
+    if (abajo && !abajo.mov) {
+      pt.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+      ray.setFromCamera(pt, camera);
+      const hit = ray.intersectObjects(piezas)[0];
+      if (hit) mostrarFicha(hit.object.userData.obra); else $('#ficha').hidden = true;
+    }
+    abajo = null;
+  };
+  let tFicha;
+  function mostrarFicha(o) {
+    $('#fTitulo').textContent = o.titulo || ''; $('#fDesc').textContent = o.descripcion || '';
+    $('#ficha').hidden = false; clearTimeout(tFicha); tFicha = setTimeout(() => $('#ficha').hidden = true, 5000);
+  }
+  let tPista, pistaFija = false;
+  function mostrarPista(txt, ms) { pistaFija = true; $('#pista').textContent = txt; $('#pista').hidden = false; clearTimeout(tPista); tPista = setTimeout(() => { pistaFija = false; $('#pista').hidden = true; }, ms); }
+
+  /* --- Indicador "gira a la izquierda/derecha" --- */
+  const v = new THREE.Vector3();
+  function guia() {
+    if (pistaFija || !piezas.length) return;
+    let visible = false, mejor = null;
+    for (const m of piezas) {
+      v.setFromMatrixPosition(m.matrixWorld).project(camera);
+      if (v.z < 1 && Math.abs(v.x) < 0.95 && Math.abs(v.y) < 0.95) { visible = true; break; }
+      v.setFromMatrixPosition(m.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+      const ang = Math.atan2(v.x, -v.z);
+      if (!mejor || Math.abs(ang) < Math.abs(mejor)) mejor = ang;
+    }
+    const p = $('#pista');
+    if (visible || mejor === null) { p.hidden = true; return; }
+    p.textContent = mejor < 0 ? '← Gira' : 'Gira →'; p.hidden = false;
+  }
+
+  /* --- Tamaño --- */
+  function ajustar() {
+    if (renderer.xr.isPresenting) return;
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', ajustar); ajustar();
+
+  /* --- Bucle --- */
+  const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cuadros = 0;
+  renderer.setAnimationLoop(t => {
+    if (!renderer.xr.isPresenting) {
+      if (ori && !modoArrastre) {
+        aplicarOrientacion();
+        if (!centrado && ++cuadros > 15) { recentrar(); centrado = true; }
+      } else camera.rotation.set(pitch, yaw, 0, 'YXZ');
+    }
+    const now = performance.now();
+    for (const m of piezas) {
+      const u = m.userData, k = Math.min(1, (now - u.t0) / 700);
+      m.scale.setScalar(reducir ? 1 : Math.max(0.001, 1 + 2.7 * (k - 1) ** 3 + 1.7 * (k - 1) ** 2));
+      if (u.obra.flotar && !reducir) m.position.y = u.y0 + Math.sin(t / 1000 + u.fase) * 0.05;
+    }
+    renderer.render(scene, camera);
+    guia();
+  });
+
+  /* --- Foto: cámara + arte en una sola imagen --- */
+  let ultimaFoto = null;
+  $('#btnFoto').onclick = () => {
+    const W = canvas.width, H = canvas.height, c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    if (!video.hidden && video.videoWidth) {
+      const s = Math.max(W / video.videoWidth, H / video.videoHeight), dw = video.videoWidth * s, dh = video.videoHeight * s;
+      g.drawImage(video, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    } else { g.fillStyle = '#1d1a21'; g.fillRect(0, 0, W, H); }
+    g.drawImage(canvas, 0, 0, W, H);
+    $('#flash').classList.add('on'); requestAnimationFrame(() => requestAnimationFrame(() => $('#flash').classList.remove('on')));
+    c.toBlob(b => { ultimaFoto = b; $('#fotoImg').src = URL.createObjectURL(b); $('#fotoPrev').hidden = false; }, 'image/jpeg', 0.92);
+  };
+  $('#fotoCerrar').onclick = () => $('#fotoPrev').hidden = true;
+  $('#fotoCompartir').onclick = async () => {
+    if (!ultimaFoto) return;
+    const f = new File([ultimaFoto], 'calle-aumentada.jpg', { type: 'image/jpeg' });
+    try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Arte en la calle' }); return; } } catch { return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click();
+  };
+
+  /* --- AR anclado con WebXR (Android/Chrome): las obras se quedan fijas en el espacio al caminar --- */
+  if (navigator.xr && navigator.xr.isSessionSupported) {
+    navigator.xr.isSessionSupported('immersive-ar').then(ok => { $('#btnXR').hidden = !ok; }).catch(() => {});
+  }
+  $('#btnXR').onclick = async () => {
+    try {
+      const sesion = await navigator.xr.requestSession('immersive-ar', { optionalFeatures: ['dom-overlay', 'local-floor'], domOverlay: { root: $('#hud') } });
+      if (stream) stream.getTracks().forEach(tr => tr.enabled = false);
+      video.hidden = true; $('#btnXR').hidden = true;
+      grupo.rotation.y = 0; grupo.position.set(0, 0, 0);
+      renderer.xr.enabled = true; renderer.xr.setReferenceSpaceType('local');
+      await renderer.xr.setSession(sesion);
+      sesion.addEventListener('select', recentrar);
+      mostrarPista('Camina alrededor', 3500);
+      sesion.addEventListener('end', () => {
+        renderer.xr.enabled = false; grupo.position.set(0, 0, 0);
+        if (stream) { stream.getTracks().forEach(tr => tr.enabled = true); video.hidden = false; }
+        $('#btnXR').hidden = false; centrado = false; cuadros = 0; ajustar();
+      });
+    } catch { mostrarPista('No disponible en este celular', 3000); }
+  };
+
+  detener = () => {
+    renderer.setAnimationLoop(null);
+    window.removeEventListener('deviceorientation', onOri, true);
+    removeEventListener('resize', ajustar);
+    if (stream) stream.getTracks().forEach(tr => tr.stop());
+    video.srcObject = null; video.hidden = false;
+    grupo.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map && o.material.map !== sombraTex) o.material.map.dispose(); o.material.dispose(); } });
+    renderer.dispose();
+    $('#btnAbrir').disabled = false; $('#btnAbrir').textContent = 'Ver el arte';
+  };
+}
+
+/* ---------- Arranque ---------- */
+const hashId = decodeURIComponent(location.hash.slice(1));
+const idLugar = new URLSearchParams(location.search).get('lugar') || (LUGARES[hashId] ? hashId : null);
+if (idLugar) iniciarAR(idLugar); else iniciarEstudio();
+}
+</script>
+</body>
+</html>
